@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -26,7 +27,7 @@ import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping(value = "/users")
 public class UserController {
 
   private final UserItemsService service;
@@ -35,7 +36,7 @@ public class UserController {
     this.service = service;
   }
 
-  @GetMapping()
+  @GetMapping("")
   public List<User> retrieveAllUsers() {
     return service.findAllUsers();
   }
@@ -68,7 +69,7 @@ public class UserController {
     return user.get().getItems();
   }
 
-  @PostMapping("/users")
+  @PostMapping("")
   public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
     User savedUser = service.saveUser(user);
 
