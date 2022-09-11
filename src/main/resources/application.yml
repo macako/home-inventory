@@ -1,0 +1,11 @@
+logging.level.org.springframework: info
+
+spring:
+  jpa:
+    defer-datasource-initialization: true
+    show-sql: true
+  datasource: jdbc:h2:mem:testDB
+  devtools:
+    livereload:
+      enabled: true
+
