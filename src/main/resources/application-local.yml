@@ -18,5 +18,5 @@ spring:
     livereload:
       enabled: true
 
-logging.level.org.springframework: debug
+logging.level.org.springframework: info
 
