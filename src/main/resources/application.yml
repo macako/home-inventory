@@ -9,6 +9,10 @@ spring:
   devtools:
     livereload:
       enabled: true
+  security:
+    user:
+      name: username
+      password: password
 
 logging.level.org.springframework: debug
 
