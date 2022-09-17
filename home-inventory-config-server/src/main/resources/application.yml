@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: home-inventory-config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///home/macako/Desarrollo/git-projects/home-inventory/git-localconfig-repo
+
+server:
+  port: 8888
