@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: file://${user.home}/Desarrollo/git-localconfig-repo
+  security:
+    user:
+      name: root
+      password: s3cr3t

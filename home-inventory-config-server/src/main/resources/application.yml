@@ -1,3 +1,5 @@
+server.port: 8888
+
 spring:
   application:
     name: home-inventory-config-server
@@ -5,7 +7,4 @@ spring:
     config:
       server:
         git:
-          uri: file:///home/macako/Desarrollo/git-projects/home-inventory/git-localconfig-repo
-
-server:
-  port: 8888
+          default-label: main
