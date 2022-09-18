@@ -1,9 +1,9 @@
-server.port: 8000runtimeOnly 'com.h2database:h2'
+server.port: 8100
 logging.level.org.springframework: debug
 
 spring:
   application:
-    name: home-inventory-item-service
+    name: home-inventory-user-service
   config:
     import: optional:configserver:http://root:s3cr3t@localhost:8888
   jpa:
@@ -18,6 +18,3 @@ spring:
     user:
       name: username
       password: password
-
-
-
