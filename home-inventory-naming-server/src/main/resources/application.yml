@@ -1,12 +1,15 @@
+server.port: 8761
+
 spring:
   application:
     name: home-inventory-naming-server
-  server:
-    port: 8761
   cloud:
     config:
       enabled: false
 
-eureka.client:
-  register-with-eureka: false
-  fetch-registry: false
+eureka:
+  client:
+    instance:
+      prefer-ip-address: true
+    register-with-eureka: false
+    fetch-registry: false
