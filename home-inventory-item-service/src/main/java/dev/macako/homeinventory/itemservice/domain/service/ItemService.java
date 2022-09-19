@@ -23,7 +23,7 @@ public class ItemService {
     this.itemRepository = itemRepository;
   }
 
-  @Retry(name = "default")
+
   public Optional<User> findUserById(int id) {
     return userRepository.findById(id);
   }

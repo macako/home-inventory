@@ -6,6 +6,7 @@ import dev.macako.homeinventory.userservice.domain.service.UserService;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import org.slf4j.Logger;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.Collections.emptyList;
+import static org.slf4j.LoggerFactory.getLogger;
+import static org.springframework.hateoas.EntityModel.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import static org.springframework.http.ResponseEntity.created;
@@ -31,6 +34,7 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
+  private final Logger logger = getLogger(UserController.class);
 
   private final UserService service;
 
@@ -49,13 +53,16 @@ public class UserController {
   @Bulkhead(name = "sample-api")
   @CircuitBreaker(name = "default")
   public EntityModel<User> retrieveUser(@PathVariable int id) {
-    Optional<User> user = service.findUserById(id);
+    final Optional<User> user = service.findUserById(id);
 
-    if (user.isEmpty()) throw new UserNotFoundException("id:" + id);
+    if (user.isEmpty()) {
+      logger.error("USER_NOT_FOUND");
+      throw new UserNotFoundException("user id not found");
+    }
 
-    EntityModel<User> entityModel = EntityModel.of(user.get());
+    final EntityModel<User> entityModel = of(user.get());
+    final WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveAllUsers());
 
-    WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveAllUsers());
     entityModel.add(link.withRel("all-users"));
 
     return entityModel;
@@ -63,14 +70,20 @@ public class UserController {
 
   @DeleteMapping("/{id}")
   public void deleteUser(@PathVariable int id) {
+    final Optional<User> user = service.findUserById(id);
+
+    if (user.isEmpty()) {
+      logger.error("USER_NOT_FOUND");
+      throw new UserNotFoundException("user id not found");
+    }
     service.deleteUserById(id);
   }
 
   @PostMapping("")
   public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-    User savedUser = service.saveUser(user);
-
-    URI location = fromCurrentRequest().path("/{id}").buildAndExpand(savedUser.getId()).toUri();
+    final User savedUser = service.saveUser(user);
+    final URI location =
+        fromCurrentRequest().path("/{id}").buildAndExpand(savedUser.getId()).toUri();
 
     return created(location).build();
   }
