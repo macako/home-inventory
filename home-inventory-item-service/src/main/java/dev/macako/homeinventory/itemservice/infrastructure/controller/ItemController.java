@@ -7,6 +7,7 @@ import dev.macako.homeinventory.itemservice.domain.service.ItemService;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,13 +22,14 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.Collections.emptyList;
+import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
 @RequestMapping(value = "/items")
 public class ItemController {
-
+  private final Logger logger = getLogger(ItemController.class);
   private final ItemService service;
 
   public ItemController(ItemService service) {
@@ -44,11 +46,11 @@ public class ItemController {
   @GetMapping("/{id}")
   @Bulkhead(name = "sample-api")
   @CircuitBreaker(name = "default", fallbackMethod = "hardcodedResponse")
-  public List<Item> retrieveItemsForUser(@PathVariable int id) {
+  public List<Item> retrieveItemsByUser(@PathVariable int id) {
     final Optional<User> user = service.findUserById(id);
 
     if (user.isEmpty()) {
-      throw new UserNotFoundException("id:" + id);
+      throw new UserNotFoundException("user id not found:" + id);
     }
 
     return service.findItemsByUserId(id);
@@ -60,7 +62,7 @@ public class ItemController {
     final Optional<User> user = service.findUserById(id);
 
     if (user.isEmpty()) {
-      throw new UserNotFoundException("id:" + id);
+      throw new UserNotFoundException("user id not found:" + id);
     }
 
     final Item savedItem = service.saveItem(user.get(), item);

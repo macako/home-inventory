@@ -1,4 +1,4 @@
-server.port: 8000runtimeOnly 'com.h2database:h2'
+server.port: 8000
 logging.level.org.springframework: debug
 
 spring:
