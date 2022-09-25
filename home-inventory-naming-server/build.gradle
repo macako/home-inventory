@@ -4,7 +4,7 @@ plugins {
 	id 'java'
 }
 
-group = 'dev.macako.homeinventory.namingserver'
+group = 'dev.macako.homeinventory'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
