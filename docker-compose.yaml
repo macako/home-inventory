@@ -1,0 +1,69 @@
+version: '3.7'
+
+services:
+
+  home-inventory-item-service:
+    image: hectorolea/home-inventory-item-service:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8000:8000"
+    networks:
+      - home-inventory-network
+    depends_on:
+      - home-inventory-config-server
+      - home-inventory-naming-server
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://home-inventory-naming-server:8761/eureka
+      SPRING_PROFILES_ACTIVE: test
+
+  home-inventory-user-service:
+    image: hectorolea/home-inventory-user-service:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8100:8100"
+    networks:
+      - home-inventory-network
+    depends_on:
+      - home-inventory-config-server
+      - home-inventory-naming-server
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://home-inventory-naming-server:8761/eureka
+      SPRING_PROFILES_ACTIVE: test
+
+  home-inventory-config-server:
+    image: hectorolea/home-inventory-config-server:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8888:8888"
+    networks:
+      - home-inventory-network
+    depends_on:
+      - home-inventory-naming-server
+    environment:
+      #EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://home-inventory-naming-server:8761/eureka
+      SPRING_PROFILES_ACTIVE: test
+
+  home-inventory-api-gateway:
+    image: hectorolea/home-inventory-api-gateway:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8765:8765"
+    networks:
+      - home-inventory-network
+    depends_on:
+      - home-inventory-config-server
+      - home-inventory-naming-server
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://home-inventory-naming-server:8761/eureka
+
+  home-inventory-naming-server:
+    image: hectorolea/home-inventory-naming-server:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8761:8761"
+    networks:
+      - home-inventory-network
+
+networks:
+  home-inventory-network:
+

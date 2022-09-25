@@ -3,8 +3,7 @@ spring:
     config:
       server:
         git:
-          uri: file://${user.home}/Desarrollo/git-localconfig-repo
-  security:
-    user:
-      name: root
-      password: s3cr3t
+          uri: https://github.com/macako/home-inventory.git
+          searchPaths: config-data
+          username: ${GIT_USER}
+          password: ${GIT_PASSWORD}
