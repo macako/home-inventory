@@ -1,10 +1,10 @@
-package dev.macako.homeinventory.homeinventoryapigateway;
+package dev.macako.homeinventory.configserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HomeInventoryApiGatewayApplicationTests {
+class HomeInventoryConfigServerApplicationTests {
 
 	@Test
 	void contextLoads() {

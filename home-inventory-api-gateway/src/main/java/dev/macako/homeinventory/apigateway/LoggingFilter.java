@@ -1,4 +1,4 @@
-package dev.macako.homeinventory.homeinventoryapigateway;
+package dev.macako.homeinventory.apigateway;
 
 import org.slf4j.Logger;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;

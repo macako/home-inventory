@@ -1,4 +1,4 @@
-package dev.macako.homeinventory.homeinventoryapigateway;
+package dev.macako.homeinventory.apigateway;
 
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
