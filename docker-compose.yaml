@@ -14,7 +14,8 @@ services:
       - home-inventory-naming-server
     environment:
       EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://home-inventory-naming-server:8761/eureka
-      SPRING_PROFILES_ACTIVE: test
+      SPRING_PROFILES_ACTIVE: local
+      SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411/
 
   home-inventory-user-service:
     image: hectorolea/home-inventory-user-service:0.0.1-SNAPSHOT
@@ -28,7 +29,8 @@ services:
       - home-inventory-naming-server
     environment:
       EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://home-inventory-naming-server:8761/eureka
-      SPRING_PROFILES_ACTIVE: test
+      SPRING_PROFILES_ACTIVE: local
+      SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411/
 
   home-inventory-config-server:
     image: hectorolea/home-inventory-config-server:0.0.1-SNAPSHOT
@@ -40,8 +42,8 @@ services:
     depends_on:
       - home-inventory-naming-server
     environment:
-      #EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://home-inventory-naming-server:8761/eureka
-      SPRING_PROFILES_ACTIVE: test
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://home-inventory-naming-server:8761/eureka
+      SPRING_PROFILES_ACTIVE: local
 
   home-inventory-api-gateway:
     image: hectorolea/home-inventory-api-gateway:0.0.1-SNAPSHOT
@@ -55,6 +57,7 @@ services:
       - home-inventory-naming-server
     environment:
       EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://home-inventory-naming-server:8761/eureka
+      SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411/
 
   home-inventory-naming-server:
     image: hectorolea/home-inventory-naming-server:0.0.1-SNAPSHOT
@@ -63,6 +66,15 @@ services:
       - "8761:8761"
     networks:
       - home-inventory-network
+
+  zipkin-server:
+    image: openzipkin/zipkin:2.23
+    mem_limit: 300m
+    ports:
+      - "9411:9411"
+    networks:
+      - home-inventory-network
+    restart: always #Restart if there is a problem starting up
 
 networks:
   home-inventory-network:

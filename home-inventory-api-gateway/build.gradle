@@ -2,14 +2,22 @@ plugins {
     id 'org.springframework.boot' version '2.6.12'
     id 'io.spring.dependency-management' version '1.0.14.RELEASE'
     id 'java'
+    id 'com.palantir.docker-run' version '0.33.0'
 }
 
 group = 'dev.macako.homeinventory'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+targetCompatibility = '11'
+def dockerOwner = 'dockerOwner'
+def dockerPassword = 'dockerOwner'
 
 repositories {
     mavenCentral()
+}
+
+springBoot {
+    buildInfo()
 }
 
 ext {
@@ -36,4 +44,23 @@ dependencyManagement {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+dockerRun {
+    name "${project.name}"
+    image "${dockerOwner}/${project.name}:${project.version}"
+    ports '8756:8756'
+    clean true
+    daemonize false
+}
+
+tasks.named("bootBuildImage") {
+    imageName = "${dockerOwner}/${project.name}:${project.version}"
+    publish = true
+    docker {
+        publishRegistry {
+            username = "${dockerOwner}"
+            password = "${dockerPassword}"
+        }
+    }
 }
