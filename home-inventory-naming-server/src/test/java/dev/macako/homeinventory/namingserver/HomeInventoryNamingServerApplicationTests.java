@@ -1,4 +1,4 @@
-package dev.macako.homeinventory.namingserver.homeinventorynamingserver;
+package dev.macako.homeinventory.namingserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

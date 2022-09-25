@@ -18,6 +18,3 @@ spring:
     user:
       name: username
       password: password
-
-
-

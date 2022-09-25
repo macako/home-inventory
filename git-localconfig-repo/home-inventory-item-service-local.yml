@@ -16,6 +16,9 @@ spring:
     url: jdbc:mysql://localhost:3306/home-inventory-database
     username: home-inventory-user
     password: dummypassword
+  sleuth:
+    sampler:
+      probability: 1.0
 
 eureka.client.serviceUrl.defaultZone: http://localhost:8761/eureka
 
@@ -41,8 +44,7 @@ resilience4j:
         maxConcurrentCalls: 2
       sample-api:
         maxConcurrentCalls: 5
-
-  #spring.sleuth.sampler.probability=1.0
-
-  ##spring.zipkin.baseUrl=http://localhost:9411/
+        
+##spring.zipkin.baseUrl=http://localhost:9411/
+##spring.zipkin.sender.type=rabbit
 
