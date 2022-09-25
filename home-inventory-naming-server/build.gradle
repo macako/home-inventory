@@ -1,35 +1,62 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.11'
-	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.6.11'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+    id 'java'
+    id 'com.palantir.docker-run' version '0.33.0'
 }
 
 group = 'dev.macako.homeinventory'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+targetCompatibility = '11'
+def dockerOwner = 'dockerOwner'
+def dockerPassword = 'dockerOwner'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 ext {
-	set('springCloudVersion', "2021.0.4")
+    set('springCloudVersion', "2021.0.4")
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.cloud:spring-cloud-starter-config'
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+springBoot {
+    buildInfo()
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
+}
+
+dockerRun {
+    name "${project.name}"
+    image "${dockerOwner}/${project.name}:${project.version}"
+    ports '8761:8761'
+    clean true
+    daemonize false
+}
+
+tasks.named("bootBuildImage") {
+    imageName = "${dockerOwner}/${project.name}:${project.version}"
+    publish = true
+    docker {
+        publishRegistry {
+            username = "${dockerOwner}"
+            password = "${dockerPassword}"
+        }
+    }
 }

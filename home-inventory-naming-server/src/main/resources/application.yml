@@ -9,7 +9,5 @@ spring:
 
 eureka:
   client:
-    instance:
-      prefer-ip-address: true
     register-with-eureka: false
     fetch-registry: false
