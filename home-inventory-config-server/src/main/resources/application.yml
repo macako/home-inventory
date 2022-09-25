@@ -7,4 +7,9 @@ spring:
     config:
       server:
         git:
+          uri: file://${user.home}/Desarrollo/git-localconfig-repo
           default-label: main
+  security:
+    user:
+      name: root
+      password: s3cr3t
