@@ -1,0 +1,61 @@
+server.port: 8100
+logging.level.org.springframework: info
+logging.level.dev.macako.homeinventory.userservice.infrastructure.repository: DEBUG
+
+spring:
+  application:
+    name: home-inventory-user-service
+  jpa:
+    defer-datasource-initialization: true
+    show-sql: true
+  datasource:
+    url: jdbc:h2:mem:testDB
+  devtools:
+    livereload:
+      enabled: true
+  security:
+    user:
+      name: username
+      password: password
+  sleuth:
+    sampler:
+      probability: 1.0
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      default:
+        failureRateThreshold: 90
+  retry:
+    instances:
+      default:
+        maxRetryAttempts: 5
+        waitDuration: 1s
+        enableExponentialBackoff: true
+  ratelimiter:
+    instances:
+      default:
+        limitForPeriod: 2
+        limitRefreshPeriod: 10s
+  bulkhead:
+    instances:
+      default:
+        maxConcurrentCalls: 2
+      sample-api:
+        maxConcurrentCalls: 5
+
+http:
+  homeInventoryItemService:
+    host: ${ITEM_SERVICE_HOST:http://localhost}:8000
+
