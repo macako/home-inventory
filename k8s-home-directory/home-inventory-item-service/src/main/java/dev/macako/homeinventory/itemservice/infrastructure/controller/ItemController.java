@@ -36,27 +36,28 @@ public class ItemController {
     this.service = service;
   }
 
-  @GetMapping("")
   @Bulkhead(name = "sample-api")
   @RateLimiter(name = "default")
+  @GetMapping("")
   public List<Item> retrieveAllItems() {
     return service.findAllItems();
   }
 
-  @GetMapping("/users/{userId}")
+
   @Bulkhead(name = "sample-api")
   @CircuitBreaker(name = "default", fallbackMethod = "hardcodedResponse")
-  public List<Item> retrieveItemsByUser(@PathVariable int userId) {
-    final Optional<User> user = service.findUserById(userId);
+  @GetMapping("/user/{id}")
+  public List<Item> retrieveItemsByUser(@PathVariable int id) {
+    final Optional<User> user = service.findUserById(id);
 
     if (user.isEmpty()) {
-      throw new UserNotFoundException("user id not found:" + userId);
+      throw new UserNotFoundException("user id not found:" + id);
     }
 
-    return service.findItemsByUserId(userId);
+    return service.findItemsByUserId(id);
   }
 
-  @PostMapping("/{id}")
+  @PostMapping("/user/{id}")
   public ResponseEntity<Object> createItemForUser(
       @PathVariable int id, @Valid @RequestBody Item item) {
     final Optional<User> user = service.findUserById(id);

@@ -55,7 +55,7 @@ resilience4j:
         maxConcurrentCalls: 5
 
 http:
-  userByIdUri: ${USER_BY_ID_URI:http://localhost}:8100/users/%s
+  userByIdUri: ${HOME_INVENTORY_USER_HOST:http://localhost}:8100/users/%s
 
 
 

@@ -14,6 +14,6 @@ import java.util.List;
     configuration = FeignConfiguration.class)
 public interface ItemFeignClientRepository {
 
-  @GetMapping("/items/users/{userId}")
-  List<Item> findByUserId(@PathVariable Integer userId);
+  @GetMapping("/items/user/{id}")
+  List<Item> findByUserId(@PathVariable int id);
 }

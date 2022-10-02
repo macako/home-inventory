@@ -54,16 +54,8 @@ resilience4j:
       sample-api:
         maxConcurrentCalls: 5
 
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: basic
-
 http:
   homeInventoryItemService:
     host: ${ITEM_SERVICE_HOST:http://localhost}:8000
-    itemsByUserIdUri: /items/users/{userId}
+    itemsByUserIdUri: /items/user/{userId}
 
