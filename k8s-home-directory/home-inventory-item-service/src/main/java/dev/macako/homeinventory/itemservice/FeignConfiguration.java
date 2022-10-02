@@ -1,6 +1,6 @@
-package dev.macako.homeinventory.userservice;
+package dev.macako.homeinventory.itemservice;
 
-import feign.Logger;
+import feign.Logger.Level;
 import feign.auth.BasicAuthRequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ public class FeignConfiguration {
   }
 
   @Bean
-  Logger.Level feignLoggerLevel() {
+  Level feignLoggerLevel() {
     return BASIC;
   }
 }

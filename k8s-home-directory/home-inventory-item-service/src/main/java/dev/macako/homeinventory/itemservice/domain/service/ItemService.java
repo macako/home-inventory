@@ -23,7 +23,6 @@ public class ItemService {
     this.itemRepository = itemRepository;
   }
 
-
   public Optional<User> findUserById(int id) {
     return userRepository.findById(id);
   }
@@ -32,7 +31,6 @@ public class ItemService {
   public List<Item> findItemsByUserId(int id) {
     return itemRepository.findByUserId(id);
   }
-
 
   @Retry(name = "default", fallbackMethod = "hardcodedResponse")
   public List<Item> findAllItems() {

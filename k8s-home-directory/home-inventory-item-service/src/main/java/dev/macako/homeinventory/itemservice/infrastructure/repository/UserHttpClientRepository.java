@@ -42,7 +42,8 @@ public class UserHttpClientRepository implements UserRepository {
   private final RestTemplate restTemplate = new RestTemplate();
   private final String userByIdUri;
 
-  public UserHttpClientRepository(@Value("${http.userByIdUri}") String userByIdUri) {
+  public UserHttpClientRepository(
+      @Value("${http.homeInventoryUserService.userByIdUri}") String userByIdUri) {
     this.userByIdUri = userByIdUri;
   }
 

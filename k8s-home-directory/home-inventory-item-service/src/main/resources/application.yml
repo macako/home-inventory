@@ -1,5 +1,6 @@
 server.port: 8000
-logging.level.org.springframework: debug
+logging.level.org.springframework: info
+logging.level.dev.macako.homeinventory.itemservice.infrastructure.repository: DEBUG
 
 spring:
   application:
@@ -55,7 +56,7 @@ resilience4j:
         maxConcurrentCalls: 5
 
 http:
-  userByIdUri: ${HOME_INVENTORY_USER_HOST:http://localhost}:8100/users/%s
-
-
+  homeInventoryUserService:
+    host: ${USER_SERVICE_HOST:http://localhost}:8100
+    userByIdUri: ${USER_SERVICE_HOST:http://localhost}:8100/users/%s
 

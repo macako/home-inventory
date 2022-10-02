@@ -4,7 +4,6 @@ import dev.macako.homeinventory.userservice.domain.model.Item;
 import dev.macako.homeinventory.userservice.domain.model.User;
 import dev.macako.homeinventory.userservice.domain.model.UserNotFoundException;
 import dev.macako.homeinventory.userservice.domain.service.UserService;
-import dev.macako.homeinventory.userservice.infrastructure.repository.ItemFeignClientRepository;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
@@ -36,15 +35,13 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
+  public static final String USER_NOT_FOUND = "USER_NOT_FOUND id: {}";
   private final Logger logger = getLogger(UserController.class);
 
   private final UserService service;
 
-  private final ItemFeignClientRepository itemRepository;
-
-  public UserController(UserService service, ItemFeignClientRepository itemRepository) {
+  public UserController(UserService service) {
     this.service = service;
-    this.itemRepository = itemRepository;
   }
 
   @GetMapping("")
@@ -58,13 +55,9 @@ public class UserController {
   @Bulkhead(name = "sample-api")
   @CircuitBreaker(name = "default")
   public EntityModel<User> retrieveUser(@PathVariable int id) {
+    validateUserById(id);
+
     final Optional<User> user = service.findUserById(id);
-
-    if (user.isEmpty()) {
-      logger.error("USER_NOT_FOUND");
-      throw new UserNotFoundException("user id not found");
-    }
-
     final EntityModel<User> entityModel = of(user.get());
     final WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveAllUsers());
 
@@ -75,12 +68,8 @@ public class UserController {
 
   @DeleteMapping("/{id}")
   public void deleteUser(@PathVariable int id) {
-    final Optional<User> user = service.findUserById(id);
+    validateUserById(id);
 
-    if (user.isEmpty()) {
-      logger.error("USER_NOT_FOUND");
-      throw new UserNotFoundException("user id not found");
-    }
     service.deleteUserById(id);
   }
 
@@ -95,16 +84,21 @@ public class UserController {
 
   @GetMapping("/{id}/items")
   public List<Item> retrieveItemsByUser(@PathVariable int id) {
-    final Optional<User> user = service.findUserById(id);
+    validateUserById(id);
 
-    if (user.isEmpty()) {
-      throw new UserNotFoundException("user id not found:" + id);
-    }
-
-    return itemRepository.findByUserId(id);
+    return service.findItemsByUserId(id);
   }
 
   public List<User> hardcodedResponse(Exception ex) {
     return emptyList();
+  }
+
+  private void validateUserById(int id) {
+    final Optional<User> user = service.findUserById(id);
+
+    if (user.isEmpty()) {
+      logger.error(USER_NOT_FOUND, id);
+      throw new UserNotFoundException("user id not found");
+    }
   }
 }

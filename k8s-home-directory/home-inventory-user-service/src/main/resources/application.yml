@@ -1,5 +1,6 @@
 server.port: 8100
 logging.level.org.springframework: info
+logging.level.dev.macako.homeinventory.userservice.infrastructure.repository: DEBUG
 
 spring:
   application:
@@ -57,5 +58,4 @@ resilience4j:
 http:
   homeInventoryItemService:
     host: ${ITEM_SERVICE_HOST:http://localhost}:8000
-    itemsByUserIdUri: /items/user/{userId}
 

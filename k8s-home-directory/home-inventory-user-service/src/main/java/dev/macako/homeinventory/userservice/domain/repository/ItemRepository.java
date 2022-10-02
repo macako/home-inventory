@@ -5,5 +5,5 @@ import dev.macako.homeinventory.userservice.domain.model.Item;
 import java.util.List;
 
 public interface ItemRepository {
-  List<Item> findByUserId(Integer id);
+  List<Item> findByUserId(int id);
 }
