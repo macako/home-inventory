@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ItemRepository {
   List<Item> findByUserId(int id);
+
+  void deleteItemsByUserId(int id);
 }

@@ -69,7 +69,7 @@ public class UserController {
   @DeleteMapping("/{id}")
   public void deleteUser(@PathVariable int id) {
     validateUserById(id);
-
+    service.deleteItemsByUserId(id);
     service.deleteUserById(id);
   }
 
@@ -87,6 +87,12 @@ public class UserController {
     validateUserById(id);
 
     return service.findItemsByUserId(id);
+  }
+
+  @DeleteMapping("/{id}/items")
+  public void deleteItemsByUserId(@PathVariable int id) {
+    validateUserById(id);
+    service.deleteItemsByUserId(id);
   }
 
   public List<User> hardcodedResponse(Exception ex) {

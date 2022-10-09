@@ -2,7 +2,6 @@ package dev.macako.homeinventory.itemservice.infrastructure.repository;
 
 import dev.macako.homeinventory.itemservice.domain.model.User;
 import dev.macako.homeinventory.itemservice.domain.repository.UserRepository;
-import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -10,7 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
@@ -48,7 +46,6 @@ public class UserHttpClientRepository implements UserRepository {
   }
 
   @Override
-  @Retry(name = "default", fallbackMethod = "hardcodedResponse")
   public Optional<User> findById(int id) {
     final String url = format(userByIdUri, id);
 
@@ -66,10 +63,5 @@ public class UserHttpClientRepository implements UserRepository {
       }
       throw httpClientErrorException;
     }
-  }
-
-  private Optional<User> hardcodedResponse(RestClientException restClientException) {
-    logger.error("ERROR_GETTING_USER", restClientException);
-    return empty();
   }
 }

@@ -46,4 +46,8 @@ public class UserService {
   public List<User> hardcodedResponse(Exception ex) {
     return emptyList();
   }
+
+  public void deleteItemsByUserId(int id) {
+    itemRepository.deleteItemsByUserId(id);
+  }
 }

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import static feign.Logger.Level.BASIC;
 import static feign.form.util.CharsetUtil.UTF_8;
 
-@Configuration
+//@Configuration
 public class FeignConfiguration {
   @Bean
   public BasicAuthRequestInterceptor basicAuthRequestInterceptor() {
