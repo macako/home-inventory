@@ -1,7 +1,6 @@
 package dev.macako.homeinventory.itemservice.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.macako.homeinventory.itemservice.domain.model.User;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,14 +12,15 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 public class Item {
+
   @Id @GeneratedValue private Integer id;
 
-  @Size(min = 10)
+  @Size(min = 5, message = "description should have at least 5 characters")
   private String description;
 
   @ManyToOne(fetch = LAZY)
   @JsonIgnore
-  private User user;
+  private UserItems userItems;
 
   public Integer getId() {
     return id;
@@ -38,12 +38,12 @@ public class Item {
     this.description = description;
   }
 
-  public User getUser() {
-    return user;
+  public UserItems getUserItems() {
+    return userItems;
   }
 
-  public void setUser(User user) {
-    this.user = user;
+  public void setUserItems(UserItems userItems) {
+    this.userItems = userItems;
   }
 
   @Override

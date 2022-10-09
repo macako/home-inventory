@@ -2,6 +2,7 @@ package dev.macako.homeinventory.itemservice.infrastructure.controller;
 
 import dev.macako.homeinventory.itemservice.domain.model.UserNotFoundException;
 import dev.macako.homeinventory.itemservice.infrastructure.model.ErrorDetails;
+import feign.FeignException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @ControllerAdvice
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler(UserNotFoundException.class)
+  @ExceptionHandler({UserNotFoundException.class, FeignException.NotFound.class})
   public ResponseEntity<ErrorDetails> handleUserNotFoundException(Exception ex, WebRequest request)
       throws Exception {
     ErrorDetails errorDetails =

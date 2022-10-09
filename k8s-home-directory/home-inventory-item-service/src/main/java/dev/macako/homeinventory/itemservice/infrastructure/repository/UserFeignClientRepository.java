@@ -1,8 +1,8 @@
 package dev.macako.homeinventory.itemservice.infrastructure.repository;
 
+import dev.macako.homeinventory.itemservice.FeignConfiguration;
 import dev.macako.homeinventory.itemservice.domain.model.User;
 import dev.macako.homeinventory.itemservice.domain.repository.UserRepository;
-import dev.macako.homeinventory.itemservice.FeignConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

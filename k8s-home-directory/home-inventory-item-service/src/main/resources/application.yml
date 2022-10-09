@@ -1,6 +1,8 @@
 server.port: 8000
-logging.level.org.springframework: info
-logging.level.dev.macako.homeinventory.itemservice.infrastructure.repository: DEBUG
+logging.level:
+  org.springframework: debug
+  dev.macako.homeinventory.itemservice.infrastructure.repository: DEBUG
+  web: DEBUG
 
 spring:
   application:
@@ -9,10 +11,7 @@ spring:
     defer-datasource-initialization: true
     show-sql: true
   datasource:
-    url: jdbc:h2:mem:testDB
-  devtools:
-    livereload:
-      enabled: true
+    url: jdbc:h2:mem:itemDB
   security:
     user:
       name: username
@@ -40,7 +39,7 @@ resilience4j:
   retry:
     instances:
       default:
-        maxRetryAttempts: 5
+        maxRetryAttempts: 3
         waitDuration: 1s
         enableExponentialBackoff: true
   ratelimiter:
