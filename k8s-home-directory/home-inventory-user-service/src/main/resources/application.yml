@@ -56,5 +56,5 @@ resilience4j:
 
 http:
   homeInventoryItemService:
-    host: ${ITEM_SERVICE_HOST:http://localhost}:8000
+    host: ${HOME_INVENTORY_ITEM_SERVICE_HOST:http://localhost}:8000
 
