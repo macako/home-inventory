@@ -1,29 +1,15 @@
 package dev.macako.homeinventory.userservice.infrastructure.model;
 
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
+@Builder
 public class ErrorDetails {
-
   private LocalDateTime timestamp;
   private String message;
   private String details;
-
-  public ErrorDetails(LocalDateTime timestamp, String message, String details) {
-    super();
-    this.timestamp = timestamp;
-    this.message = message;
-    this.details = details;
-  }
-
-  public LocalDateTime getTimestamp() {
-    return timestamp;
-  }
-
-  public String getMessage() {
-    return message;
-  }
-
-  public String getDetails() {
-    return details;
-  }
 }

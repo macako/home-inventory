@@ -1,5 +1,11 @@
 package dev.macako.homeinventory.userservice.infrastructure.controller;
 
+import static java.lang.String.format;
+import static java.time.LocalDateTime.now;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 import dev.macako.homeinventory.userservice.domain.model.UserNotFoundException;
 import dev.macako.homeinventory.userservice.infrastructure.model.ErrorDetails;
 import org.springframework.http.HttpHeaders;
@@ -11,19 +17,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import static java.time.LocalDateTime.now;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
 @ControllerAdvice
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(UserNotFoundException.class)
   public ResponseEntity<ErrorDetails> handleUserNotFoundException(Exception ex, WebRequest request)
       throws Exception {
-    ErrorDetails errorDetails =
-        new ErrorDetails(now(), ex.getMessage(), request.getDescription(false));
+    ErrorDetails errorDetails = createErrorDetails(ex.getMessage(), request);
 
     return new ResponseEntity<>(errorDetails, NOT_FOUND);
   }
@@ -31,8 +31,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorDetails> handleAllExceptions(Exception ex, WebRequest request)
       throws Exception {
-    ErrorDetails errorDetails =
-        new ErrorDetails(now(), ex.getMessage(), request.getDescription(false));
+    ErrorDetails errorDetails = createErrorDetails(ex.getMessage(), request);
 
     return new ResponseEntity<>(errorDetails, INTERNAL_SERVER_ERROR);
   }
@@ -45,14 +44,20 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
       WebRequest request) {
 
     ErrorDetails errorDetails =
-        new ErrorDetails(
-            now(),
-            "Total Errors:"
-                + ex.getErrorCount()
-                + " First Error:"
-                + ex.getFieldError().getDefaultMessage(),
-            request.getDescription(false));
+        createErrorDetails(
+            format(
+                "Total Errors: %s First Error: %s",
+                ex.getErrorCount(), ex.getFieldError().getDefaultMessage()),
+            request);
 
     return new ResponseEntity<>(errorDetails, BAD_REQUEST);
+  }
+
+  private ErrorDetails createErrorDetails(String ex, WebRequest request) {
+    return ErrorDetails.builder()
+        .timestamp(now())
+        .message(ex)
+        .details(request.getDescription(false))
+        .build();
   }
 }

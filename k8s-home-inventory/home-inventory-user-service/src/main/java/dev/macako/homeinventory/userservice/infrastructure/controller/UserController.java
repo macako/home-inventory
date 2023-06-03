@@ -1,5 +1,12 @@
 package dev.macako.homeinventory.userservice.infrastructure.controller;
 
+import static java.util.Collections.emptyList;
+import static org.springframework.hateoas.EntityModel.of;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import static org.springframework.http.ResponseEntity.created;
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
+
 import dev.macako.homeinventory.userservice.domain.model.Item;
 import dev.macako.homeinventory.userservice.domain.model.User;
 import dev.macako.homeinventory.userservice.domain.model.UserNotFoundException;
@@ -7,7 +14,11 @@ import dev.macako.homeinventory.userservice.domain.service.UserService;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
-import org.slf4j.Logger;
+import java.net.URI;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -19,24 +30,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.util.List;
-import java.util.Optional;
-
-import static java.util.Collections.emptyList;
-import static org.slf4j.LoggerFactory.getLogger;
-import static org.springframework.hateoas.EntityModel.of;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-import static org.springframework.http.ResponseEntity.created;
-import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
-
 @RestController
 @RequestMapping(value = "/users")
+@Slf4j
 public class UserController {
   public static final String USER_NOT_FOUND = "USER_NOT_FOUND id: {}";
-  private final Logger logger = getLogger(UserController.class);
 
   private final UserService service;
 
@@ -103,7 +101,7 @@ public class UserController {
     final Optional<User> user = service.findUserById(id);
 
     if (user.isEmpty()) {
-      logger.error(USER_NOT_FOUND, id);
+      log.error(USER_NOT_FOUND, id);
       throw new UserNotFoundException("user id not found");
     }
   }

@@ -1,16 +1,15 @@
 package dev.macako.homeinventory.userservice.domain.service;
 
+import static java.util.Collections.emptyList;
+
 import dev.macako.homeinventory.userservice.domain.model.Item;
 import dev.macako.homeinventory.userservice.domain.model.User;
 import dev.macako.homeinventory.userservice.domain.repository.ItemRepository;
 import dev.macako.homeinventory.userservice.domain.repository.UserRepository;
 import io.github.resilience4j.retry.annotation.Retry;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.Collections.emptyList;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {

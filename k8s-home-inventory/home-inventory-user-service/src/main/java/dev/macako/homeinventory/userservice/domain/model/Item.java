@@ -1,14 +1,13 @@
 package dev.macako.homeinventory.userservice.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import static javax.persistence.FetchType.LAZY;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
-
-import static javax.persistence.FetchType.LAZY;
 
 @Entity
 public class Item {

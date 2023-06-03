@@ -1,21 +1,5 @@
 package dev.macako.homeinventory.userservice.infrastructure.controller;
 
-import dev.macako.homeinventory.userservice.domain.model.User;
-import dev.macako.homeinventory.userservice.domain.model.UserNotFoundException;
-import dev.macako.homeinventory.userservice.domain.service.UserService;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import java.util.List;
-import java.util.Optional;
-
 import static java.lang.String.format;
 import static java.time.LocalDate.now;
 import static java.util.Optional.empty;
@@ -30,6 +14,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import dev.macako.homeinventory.userservice.domain.model.User;
+import dev.macako.homeinventory.userservice.domain.model.UserNotFoundException;
+import dev.macako.homeinventory.userservice.domain.service.UserService;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @ExtendWith(MockitoExtension.class)
 class UserControllerTest {

@@ -1,15 +1,14 @@
 package dev.macako.homeinventory.userservice.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import java.time.LocalDate;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
-import java.util.List;
 
 @Entity(name = "user_details")
 public class User {
@@ -31,7 +30,6 @@ public class User {
   protected User() {}
 
   public User(Integer id, String name, LocalDate birthDate) {
-    super();
     this.id = id;
     this.name = name;
     this.birthDate = birthDate;
